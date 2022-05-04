@@ -6,6 +6,7 @@ import logging
 import os
 from io import open
 from typing import List
+import subprocess
 
 import cachetools
 
@@ -462,3 +463,13 @@ def get_base_table_name(table_id, hpo_id=None):
     if hpo_id:
         return table_id.replace(f'{hpo_id}_', '')
     return table_id
+
+
+def get_git_tag():
+    """
+    gets latest git tag.
+    :return: git tag in string format
+    """
+    git_tag = subprocess.check_output(
+        ["git", "describe", "--abbrev=0", "--tags"]).strip().decode()
+    return git_tag
