@@ -526,10 +526,9 @@ def main(raw_args=None):
     today = datetime.datetime.now().strftime('%Y-%m-%d')
     add_cdr_metadata.main([
         '--component', add_cdr_metadata.INSERT, '--project_id', client.project,
-        '--target_dataset', combined_dataset, '--etl_version',
-        resources.get_git_tag(), '--ehr_source', args.unioned_ehr_dataset,
-        '--ehr_cutoff_date', args.ehr_cutoff_date, '--rdr_source',
-        args.rdr_dataset, '--cdr_generation_date', today,
+        '--target_dataset', combined_dataset, '--etl_version', resources.get_git_tag(),
+        '--ehr_source', args.unioned_ehr_dataset, '--ehr_cutoff_date', args.ehr_cutoff_date,
+        '--rdr_source', args.rdr_dataset, '--cdr_generation_date', today,
         '--vocabulary_version', args.vocab_dataset, '--rdr_export_date',
         args.rdr_export_date
     ])
