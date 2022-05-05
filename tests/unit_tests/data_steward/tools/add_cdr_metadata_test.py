@@ -127,14 +127,14 @@ class AddCdrMetadataTest(unittest.TestCase):
             '--target_dataset', self.target_dataset, '--source_dataset',
             self.dataset_id
         ],
-            [
-                '--component', 'update',
-                '--project_id', self.project_id,
-                '--target_dataset',
-                self.target_dataset,
-                '--source_dataset',
-                self.dataset_id
-            ]]
+                                           [
+                                               '--component', 'update',
+                                               '--project_id', self.project_id,
+                                               '--target_dataset',
+                                               self.target_dataset,
+                                               '--source_dataset',
+                                               self.dataset_id
+                                           ]]
 
         for args in incorrect_component_choice_args:
             self.assertRaises(SystemExit, parse_cdr_metadata_args, args)
