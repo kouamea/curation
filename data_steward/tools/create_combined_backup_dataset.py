@@ -145,7 +145,7 @@ def ehr_consent(client: BigQueryClient, rdr_dataset_id: str,
         dataset_id=rdr_dataset_id,
         source_value_ehr_consent=combine_consts.SOURCE_VALUE_EHR_CONSENT,
         concept_id_consent_permission_yes=combine_consts.
-            CONCEPT_ID_CONSENT_PERMISSION_YES)
+        CONCEPT_ID_CONSENT_PERMISSION_YES)
     fq_table_name = f'{client.project}.{combined_dataset}.{combine_consts.EHR_CONSENT_TABLE_ID}'
     table = bigquery.Table(fq_table_name)
     table = client.create_table(table, exists_ok=True)
@@ -189,7 +189,7 @@ def mapping_query(domain_table: str, rdr_dataset: str, unioned_ehr_dataset: str,
     """
 
     if combine_consts.PERSON_ID in [
-        field['name'] for field in resources.fields_for(domain_table)
+            field['name'] for field in resources.fields_for(domain_table)
     ]:
         return combine_consts.MAPPING_QUERY_WITH_PERSON_CHECK.format(
             rdr_dataset_id=rdr_dataset,
@@ -528,9 +528,10 @@ def main(raw_args=None):
         '--component', add_cdr_metadata.INSERT, '--project_id', client.project,
         '--target_dataset', combined_dataset, '--etl_version',
         resources.get_git_tag(), '--ehr_source', args.unioned_ehr_dataset,
-        '--ehr_cutoff_date', args.ehr_cutoff_date, '--rdr_source', args.rdr_dataset,
-        '--cdr_generation_date', today, '--vocabulary_version', args.vocab_dataset,
-        '--rdr_export_date', args.rdr_export_date
+        '--ehr_cutoff_date', args.ehr_cutoff_date, '--rdr_source',
+        args.rdr_dataset, '--cdr_generation_date', today,
+        '--vocabulary_version', args.vocab_dataset, '--rdr_export_date',
+        args.rdr_export_date
     ])
     LOGGER.info('EHR + RDR combine completed')
 

@@ -85,17 +85,13 @@ class AddCdrMetadataTest(unittest.TestCase):
                      self.field_values)
         self.assertEqual(mock_query.call_count, 3)
 
-    @mock.patch('bq_utils.create_table')
-    @mock.patch('bq_utils.table_exists')
-    def test_create_metadata_table(self, mock_table_exists, mock_create_table):
-        mock_table_exists.return_value = True
-        mock_create_table.return_value = True
-        create_metadata_table(self.dataset_id, self.fields)
-        self.assertEqual(mock_create_table.call_count, 0)
-
-        mock_table_exists.return_value = False
-        create_metadata_table(self.dataset_id, self.fields)
-        self.assertEqual(mock_create_table.call_count, 1)
+    @mock.patch('tools.add_cdr_metadata.bq.create_tables')
+    @mock.patch('tools.add_cdr_metadata.bq.get_client')
+    def test_create_metadata_table(self, mock_get_client, mock_create_tables):
+        mock_get_client.return_value = True
+        mock_create_tables.return_value = True
+        create_metadata_table(self.project_id, self.dataset_id, self.fields)
+        self.assertEqual(mock_create_tables.call_count, 1)
 
     def test_etl_metadata_query(self):
         expected_query = ADD_ETL_METADATA_QUERY.render(
@@ -131,14 +127,14 @@ class AddCdrMetadataTest(unittest.TestCase):
             '--target_dataset', self.target_dataset, '--source_dataset',
             self.dataset_id
         ],
-                                           [
-                                               '--component', 'update',
-                                               '--project_id', self.project_id,
-                                               '--target_dataset',
-                                               self.target_dataset,
-                                               '--source_dataset',
-                                               self.dataset_id
-                                           ]]
+            [
+                '--component', 'update',
+                '--project_id', self.project_id,
+                '--target_dataset',
+                self.target_dataset,
+                '--source_dataset',
+                self.dataset_id
+            ]]
 
         for args in incorrect_component_choice_args:
             self.assertRaises(SystemExit, parse_cdr_metadata_args, args)
